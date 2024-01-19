@@ -1,6 +1,6 @@
 package ru.otus;
 
-public class Customer implements Comparable<Customer>, Cloneable {
+public class Customer implements Cloneable {
     private final long id;
 
     private String name;
@@ -51,11 +51,6 @@ public class Customer implements Comparable<Customer>, Cloneable {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
-    }
-
-    @Override
-    public int compareTo(Customer o) {
-        return (int) (scores - o.scores);
     }
 
     @Override

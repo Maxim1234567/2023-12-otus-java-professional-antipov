@@ -48,7 +48,7 @@ public class CustomerTest {
         Customer customer2 = new Customer(2, "Petr", 11);
         Customer customer3 = new Customer(3, "Pavel", 888);
 
-        CustomerService customerService = new CustomerService();
+        CustomerService customerService = new CustomerService((f, s) -> (int) (f.getScores() - s.getScores()));
         customerService.add(customer1, "Data1");
         customerService.add(customer2, "Data2");
         customerService.add(customer3, "Data3");
@@ -78,7 +78,7 @@ public class CustomerTest {
         Customer customer2 = new Customer(2, "Petr", 11);
         Customer customer3 = new Customer(3, "Pavel", 888);
 
-        CustomerService customerService = new CustomerService();
+        CustomerService customerService = new CustomerService((f, s) -> (int) (f.getScores() - s.getScores()));
         customerService.add(customer1, "Data1");
         customerService.add(new Customer(customer2.getId(), customer2.getName(), customer2.getScores()), "Data2");
         customerService.add(customer3, "Data3");
