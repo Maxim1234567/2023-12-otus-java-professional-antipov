@@ -10,8 +10,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params")
+    testImplementation ("org.assertj:assertj-core")
+    testImplementation ("org.mockito:mockito-core")
+    testImplementation ("org.mockito:mockito-junit-jupiter")
 }
 
 tasks.getByName<Test>("test") {
