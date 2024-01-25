@@ -31,13 +31,7 @@ public class Tester {
 
     public static Result run(Class<?> underTest) throws Exception {
         Tester tester = new Tester(underTest);
-        tester.testing();
-
-        return new Result(
-                tester.successfully,
-                tester.failed,
-                tester.total
-        );
+        return tester.testing();
     }
 
     private Tester(Class<?> classUnderTest) throws Exception {
@@ -49,9 +43,11 @@ public class Tester {
 
     //-------------------------test-------------------------
 
-    private void testing() {
+    private Result testing() {
+        Result result = new Result();
+
         for (Method testMethod: testMethodsClassUnderTest) {
-            total++;
+            result.incrementTotal();
 
             try {
                 Object obj = createClassUnderTest();
@@ -65,11 +61,13 @@ public class Tester {
                 //After
                 callMethodClassUnderTest(obj, afterMethodClassUnderTest);
 
-                successfully++;
+                result.incrementSuccessfully();
             } catch (Exception e) {
-                failed++;
+                result.incrementFailed();
             }
         }
+
+        return result;
     }
 
     //-------------------------call-------------------------
