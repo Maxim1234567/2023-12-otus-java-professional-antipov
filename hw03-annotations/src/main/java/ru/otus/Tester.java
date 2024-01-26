@@ -12,54 +12,32 @@ import java.util.List;
 import java.util.Objects;
 
 public class Tester {
-
-    private int successfully;
-    private int failed;
-    private int total;
-
-    private Class<?> classUnderTest;
-
-    private Constructor<?> constructorUnderTest;
-
-    private Method beforeMethodClassUnderTest;
-
-    private List<Method> testMethodsClassUnderTest;
-
-    private Method afterMethodClassUnderTest;
-
     //-------------------------run--------------------------
 
-    public static Result run(Class<?> underTest) throws Exception {
-        Tester tester = new Tester(underTest);
-        return tester.testing();
-    }
-
-    private Tester(Class<?> classUnderTest) throws Exception {
-        this.classUnderTest = classUnderTest;
-
-        initConstructorUnderTest();
-        initMethods();
+    public static Result run(Class<?> underTest) {
+        Tester tester = new Tester();
+        return tester.testing(underTest);
     }
 
     //-------------------------test-------------------------
 
-    private Result testing() {
+    private Result testing(Class<?> classUnderTest) {
         Result result = new Result();
 
-        for (Method testMethod: testMethodsClassUnderTest) {
+        for (Method testMethod: findTestMethods(classUnderTest)) {
             result.incrementTotal();
 
             try {
-                Object obj = createClassUnderTest();
+                Object obj = createClassUnderTest(classUnderTest);
 
                 //Before
-                callMethodClassUnderTest(obj, beforeMethodClassUnderTest);
+                callMethodClassUnderTest(obj, findMethod(classUnderTest, Before.class));
 
                 //Test
                 callMethodClassUnderTest(obj, testMethod);
 
                 //After
-                callMethodClassUnderTest(obj, afterMethodClassUnderTest);
+                callMethodClassUnderTest(obj, findMethod(classUnderTest, After.class));
 
                 result.incrementSuccessfully();
             } catch (Exception e) {
@@ -72,8 +50,8 @@ public class Tester {
 
     //-------------------------call-------------------------
 
-    private Object createClassUnderTest() throws Exception {
-        return constructorUnderTest.newInstance();
+    private Object createClassUnderTest(Class<?> classUnderTest) throws Exception {
+        return findConstructorWithoutParams(classUnderTest).newInstance();
     }
 
     private void callMethodClassUnderTest(Object classUnderTest, Method method) throws Exception {
@@ -86,24 +64,23 @@ public class Tester {
 
     //-------------------------init-------------------------
 
-    private void initConstructorUnderTest() throws Exception {
-        constructorUnderTest = classUnderTest.getConstructor();
+    private Constructor<?> findConstructorWithoutParams(Class<?> classUnderTest) throws Exception {
+        return classUnderTest.getConstructor();
     }
 
-    private void initMethods() {
+    private List<Method> findTestMethods(Class<?> classUnderTest) {
         Method[] methods = classUnderTest.getMethods();
 
-        beforeMethodClassUnderTest = Arrays.stream(methods)
-                .filter(m -> m.isAnnotationPresent(Before.class))
-                .findFirst()
-                .orElse(null);
-
-        testMethodsClassUnderTest = Arrays.stream(methods)
+        return Arrays.stream(methods)
                 .filter(m -> m.isAnnotationPresent(Test.class))
                 .toList();
+    }
 
-        afterMethodClassUnderTest = Arrays.stream(methods)
-                .filter(m -> m.isAnnotationPresent(After.class))
+    private Method findMethod(Class<?> classUnderTest, Class<? extends Annotation> type) {
+        Method[] methods = classUnderTest.getMethods();
+
+        return Arrays.stream(methods)
+                .filter(m -> m.isAnnotationPresent(type))
                 .findFirst()
                 .orElse(null);
     }

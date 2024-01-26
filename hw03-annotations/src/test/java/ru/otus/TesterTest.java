@@ -3,7 +3,7 @@ package ru.otus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TesterTest {
 
@@ -33,41 +33,47 @@ public class TesterTest {
     public void shouldCorrectReturnResultForFirstTestClass() throws Exception {
         Result result = Tester.run(FirstTestClass.class);
 
-        assertEquals(resultForFirstTestClass, result);
+        assertEqualsResult(resultForFirstTestClass, result);
     }
 
     @Test
     public void shouldCorrectWorkWithoutBeforeAndAfter() throws Exception {
         Result result = Tester.run(SecondTestClass.class);
 
-        assertEquals(resultForSecondTestClass, result);
+        assertEqualsResult(resultForSecondTestClass, result);
     }
 
     @Test
     public void shouldCorrectWorkWithoutOnlyAfter() throws Exception {
         Result result = Tester.run(ThirdTestClass.class);
 
-        assertEquals(resultForThirdTestClass, result);
+        assertEqualsResult(resultForThirdTestClass, result);
     }
 
     @Test
     public void shouldCorrectWorkWithoutOnlyBefore() throws Exception {
         Result result = Tester.run(FourthTestClass.class);
 
-        assertEquals(resultForFourthTestClass, result);
+        assertEqualsResult(resultForFourthTestClass, result);
     }
 
     @Test
     public void shouldCorrectWorkIfTestMethodThrowException() throws Exception {
         Result result = Tester.run(FifthTestClass.class);
 
-        assertEquals(resultForFifthTestClass, result);
+        assertEqualsResult(resultForFifthTestClass, result);
     }
 
     @Test
     public void shouldNotSuccessfullyTestIfExceptionThrowInBeforeMethod() throws Exception {
         Result result = Tester.run(SixthTestClass.class);
 
-        assertEquals(resultForSixthTestClass, result);
+        assertEqualsResult(resultForSixthTestClass, result);
+    }
+
+    private void assertEqualsResult(Result excepted, Result result) {
+        assertThat(result).isNotNull()
+                .usingRecursiveComparison()
+                .isEqualTo(excepted);
     }
 }
