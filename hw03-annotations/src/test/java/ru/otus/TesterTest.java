@@ -30,42 +30,42 @@ public class TesterTest {
     }
 
     @Test
-    public void shouldCorrectReturnResultForFirstTestClass() throws Exception {
+    public void shouldCorrectReturnResultForFirstTestClass() {
         Result result = Tester.run(FirstTestClass.class);
 
         assertEqualsResult(resultForFirstTestClass, result);
     }
 
     @Test
-    public void shouldCorrectWorkWithoutBeforeAndAfter() throws Exception {
+    public void shouldCorrectWorkWithoutBeforeAndAfter() {
         Result result = Tester.run(SecondTestClass.class);
 
         assertEqualsResult(resultForSecondTestClass, result);
     }
 
     @Test
-    public void shouldCorrectWorkWithoutOnlyAfter() throws Exception {
+    public void shouldCorrectWorkWithoutOnlyAfter() {
         Result result = Tester.run(ThirdTestClass.class);
 
         assertEqualsResult(resultForThirdTestClass, result);
     }
 
     @Test
-    public void shouldCorrectWorkWithoutOnlyBefore() throws Exception {
+    public void shouldCorrectWorkWithoutOnlyBefore() {
         Result result = Tester.run(FourthTestClass.class);
 
         assertEqualsResult(resultForFourthTestClass, result);
     }
 
     @Test
-    public void shouldCorrectWorkIfTestMethodThrowException() throws Exception {
+    public void shouldCorrectWorkIfTestMethodThrowException() {
         Result result = Tester.run(FifthTestClass.class);
 
         assertEqualsResult(resultForFifthTestClass, result);
     }
 
     @Test
-    public void shouldNotSuccessfullyTestIfExceptionThrowInBeforeMethod() throws Exception {
+    public void shouldNotSuccessfullyTestIfExceptionThrowInBeforeMethod() {
         Result result = Tester.run(SixthTestClass.class);
 
         assertEqualsResult(resultForSixthTestClass, result);

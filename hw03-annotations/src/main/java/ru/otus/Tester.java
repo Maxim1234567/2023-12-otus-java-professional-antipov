@@ -24,6 +24,9 @@ public class Tester {
     private Result testing(Class<?> classUnderTest) {
         Result result = new Result();
 
+        Method beforeMethod = findMethod(classUnderTest, Before.class);
+        Method afterMethod = findMethod(classUnderTest, After.class);
+
         for (Method testMethod: findTestMethods(classUnderTest)) {
             result.incrementTotal();
 
@@ -31,13 +34,13 @@ public class Tester {
                 Object obj = createClassUnderTest(classUnderTest);
 
                 //Before
-                callMethodClassUnderTest(obj, findMethod(classUnderTest, Before.class));
+                callMethodClassUnderTest(obj, beforeMethod);
 
                 //Test
                 callMethodClassUnderTest(obj, testMethod);
 
                 //After
-                callMethodClassUnderTest(obj, findMethod(classUnderTest, After.class));
+                callMethodClassUnderTest(obj, afterMethod);
 
                 result.incrementSuccessfully();
             } catch (Exception e) {
