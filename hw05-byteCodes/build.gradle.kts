@@ -12,7 +12,6 @@ repositories {
 dependencies {
     implementation ("ch.qos.logback:logback-classic")
 
-    testImplementation("org.powermock:powermock-api-mockito:1.7.4")
     testImplementation ("org.junit.jupiter:junit-jupiter-api")
     testImplementation ("org.junit.jupiter:junit-jupiter-engine")
     testImplementation ("org.junit.jupiter:junit-jupiter-params")
