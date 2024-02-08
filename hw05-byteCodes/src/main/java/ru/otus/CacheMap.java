@@ -1,6 +1,5 @@
 package ru.otus;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -8,8 +7,8 @@ import java.util.function.Supplier;
 public class CacheMap<K, V> {
     private final Map<K, V> cache;
 
-    public CacheMap() {
-        cache = new HashMap<>();
+    public CacheMap(Map<K, V> map) {
+        cache = map;
     }
 
     public V getOrPut(K key, Supplier<V> supplier) {

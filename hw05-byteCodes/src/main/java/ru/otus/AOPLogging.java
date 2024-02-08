@@ -28,7 +28,7 @@ public class AOPLogging {
 
         public ProxyInvocationHandler(TestLoggingInterface testLoggingInterface) {
             this.testLoggingInterface = testLoggingInterface;
-            cache = new CacheMap<>();
+            cache = CacheFactory.create();
         }
 
         @Override
