@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.annotation.Log;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -15,19 +16,21 @@ public class AOPLogging {
 
     private AOPLogging() {}
 
-    public static TestLoggingInterface proxyTestLogging() {
-        InvocationHandler handler = new ProxyInvocationHandler(new TestLogging());
-        return (TestLoggingInterface) Proxy.newProxyInstance(AOPLogging.class.getClassLoader(), new Class<?>[] {TestLoggingInterface.class}, handler);
+    public static Object proxyLogging(Class<?> clazz) throws Exception {
+        Constructor<?> constructor = clazz.getConstructor();
+
+        InvocationHandler handler = new ProxyInvocationHandler(constructor.newInstance());
+        return Proxy.newProxyInstance(AOPLogging.class.getClassLoader(), clazz.getInterfaces(), handler);
     }
 
     static class ProxyInvocationHandler implements InvocationHandler {
 
-        private final TestLoggingInterface testLoggingInterface;
+        private final Object loggingObject;
 
         private final CacheMap<Method, Boolean> cache;
 
-        public ProxyInvocationHandler(TestLoggingInterface testLoggingInterface) {
-            this.testLoggingInterface = testLoggingInterface;
+        public ProxyInvocationHandler(Object loggingObject) {
+            this.loggingObject = loggingObject;
             cache = CacheFactory.create();
         }
 
@@ -37,16 +40,16 @@ public class AOPLogging {
                 log.info("executed method: {}, param: {}", method.getName(), Arrays.toString(args));
             }
 
-            return method.invoke(testLoggingInterface, args);
+            return method.invoke(loggingObject, args);
         }
 
         @Override
         public String toString() {
-            return "ProxyInvocationHandler{" + testLoggingInterface + "}";
+            return "ProxyInvocationHandler{" + loggingObject + "}";
         }
 
         private boolean hasAnnotatedMethod(Method method) {
-            return Arrays.stream(testLoggingInterface.getClass().getMethods())
+            return Arrays.stream(loggingObject.getClass().getMethods())
                     .filter(m -> m.isAnnotationPresent(Log.class))
                     .anyMatch(m -> equalsSignatureMethod(m, method));
         }

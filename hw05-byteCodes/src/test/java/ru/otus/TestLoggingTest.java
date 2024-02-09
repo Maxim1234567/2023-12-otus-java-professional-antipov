@@ -24,11 +24,11 @@ public class TestLoggingTest {
     private Appender appender;
 
     @Test
-    public void shouldCorrectLoggingCallMethodAop() {
+    public void shouldCorrectLoggingCallMethodAop() throws Exception {
         Logger logger = (Logger) LoggerFactory.getLogger(AOPLogging.class);
         logger.addAppender(appender);
 
-        TestLoggingInterface testLoggingInterface = AOPLogging.proxyTestLogging();
+        TestLoggingInterface testLoggingInterface = (TestLoggingInterface) AOPLogging.proxyLogging(TestLogging.class);
 
         testLoggingInterface.add(1, 2);
         testLoggingInterface.add(1, 2, 3);
