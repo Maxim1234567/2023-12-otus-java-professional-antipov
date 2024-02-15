@@ -1,4 +1,6 @@
-package ru.otus;
+package ru.otus.exception;
+
+import ru.otus.Denomination;
 
 public class NotBanknoteException extends RuntimeException {
 
