@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 public class Utils {
 
     public static List<Banknote> generateBanknote(Denomination denomination, int size) {
-        return Stream.generate(() -> new Banknote(denomination, denomination.getValue()))
+        return Stream.generate(() -> new Banknote(denomination))
                 .limit(size)
                 .toList();
     }

@@ -62,11 +62,11 @@ public class AtmTest {
         assertThat(result).isNotNull()
                 .hasSize(6)
                 .contains(
-                        new Banknote(FIVE_THOUSAND, FIVE_THOUSAND.getValue()),
-                        new Banknote(FIVE_HUNDRED, FIVE_HUNDRED.getValue()),
-                        new Banknote(HUNDRED, HUNDRED.getValue()),
-                        new Banknote(FIFTY, FIFTY.getValue()),
-                        new Banknote(TEN, TEN.getValue())
+                        new Banknote(FIVE_THOUSAND),
+                        new Banknote(FIVE_HUNDRED),
+                        new Banknote(HUNDRED),
+                        new Banknote(FIFTY),
+                        new Banknote(TEN)
                 );
     }
 

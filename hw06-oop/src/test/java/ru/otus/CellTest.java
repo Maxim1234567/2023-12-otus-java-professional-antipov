@@ -20,7 +20,7 @@ public class CellTest {
 
     @Test
     public void shouldCorrectReturnHundredBanknotes() {
-        Banknote thousand = new Banknote(THOUSAND, THOUSAND.getValue());
+        Banknote thousand = new Banknote(THOUSAND);
 
         Cell cell = new Cell(THOUSAND);
         cell.load(generateBanknote(THOUSAND, 1000));
@@ -66,7 +66,7 @@ public class CellTest {
 
     @Test
     public void shouldCorrectLoadBanknotes() {
-        Banknote thousand = new Banknote(THOUSAND, THOUSAND.getValue());
+        Banknote thousand = new Banknote(THOUSAND);
 
         Cell cell = new Cell(THOUSAND);
         cell.load(generateBanknote(THOUSAND, 10));
@@ -114,11 +114,11 @@ public class CellTest {
         Cell cell = new Cell(THOUSAND);
 
         List<Banknote> banknotes = List.of(
-                new Banknote(THOUSAND, THOUSAND.getValue()),
-                new Banknote(THOUSAND, THOUSAND.getValue()),
-                new Banknote(THOUSAND, THOUSAND.getValue()),
-                new Banknote(TEN, TEN.getValue()),
-                new Banknote(THOUSAND, THOUSAND.getValue())
+                new Banknote(THOUSAND),
+                new Banknote(THOUSAND),
+                new Banknote(THOUSAND),
+                new Banknote(TEN),
+                new Banknote(THOUSAND)
         );
 
         String message = assertThrows(BanknoteMismatchException.class, () -> cell.load(banknotes))
