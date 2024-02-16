@@ -1,9 +1,10 @@
 package ru.otus;
 
+import ru.otus.exception.BanknoteMismatchException;
 import ru.otus.exception.NotBanknoteException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Cell {
@@ -12,12 +13,9 @@ public class Cell {
 
     private List<Banknote> banknotes;
 
-    public Cell(Denomination denomination, int size) {
+    public Cell(Denomination denomination) {
         this.denomination = denomination;
-
-        banknotes = Stream.generate(() -> new Banknote(denomination, denomination.getValue()))
-                .limit(size)
-                .collect(Collectors.toList());
+        banknotes = new ArrayList<>();
     }
 
     public List<Banknote> getBanknotes(int size) {
@@ -31,6 +29,8 @@ public class Cell {
     }
 
     public void load(List<Banknote> banknotes) {
+        checkMismatchBanknote(banknotes);
+
         this.banknotes.addAll(banknotes);
     }
 
@@ -44,5 +44,12 @@ public class Cell {
 
     public int getCashBalance() {
         return denomination.getValue() * banknotes.size();
+    }
+
+    private void checkMismatchBanknote(List<Banknote> banknotes) {
+        banknotes.stream()
+                .filter(b -> !b.denomination().equals(denomination))
+                .findAny()
+                .ifPresent((b) -> {throw new BanknoteMismatchException(denomination, b.denomination());});
     }
 }

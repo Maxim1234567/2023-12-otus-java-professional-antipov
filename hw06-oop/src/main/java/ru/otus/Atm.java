@@ -21,7 +21,10 @@ public class Atm {
                 .collect(Collectors.groupingBy(Banknote::denomination));
 
         groupByBanknote
-                .forEach((key, value) -> cells.putIfAbsent(key, new Cell(key, 0)).load(value));
+                .forEach((key, value) -> {
+                    cells.put(key, new Cell(key));
+                    cells.get(key).load(value);
+                });
     }
 
     public List<Banknote> getBanknotes(int sum) {

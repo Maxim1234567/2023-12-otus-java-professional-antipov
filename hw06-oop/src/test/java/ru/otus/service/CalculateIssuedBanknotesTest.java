@@ -1,7 +1,9 @@
-package ru.otus;
+package ru.otus.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.otus.CalculateIssuedBanknotesImpl;
+import ru.otus.Denomination;
 import ru.otus.exception.UnableIssueAmountException;
 
 import java.util.List;
