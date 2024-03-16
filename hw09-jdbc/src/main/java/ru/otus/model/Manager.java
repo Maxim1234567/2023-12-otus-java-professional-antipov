@@ -1,8 +1,13 @@
 package ru.otus.model;
 
+import ru.otus.mapper.annotation.Id;
+
 public class Manager {
+    @Id
     private Long no;
+
     private String label;
+
     private String param1;
 
     public Manager() {}

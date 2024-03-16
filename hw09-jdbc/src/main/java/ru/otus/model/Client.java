@@ -1,7 +1,12 @@
 package ru.otus.model;
 
+import ru.otus.mapper.annotation.Id;
+
 public class Client {
+
+    @Id
     private Long id;
+
     private String name;
 
     public Client() {}
