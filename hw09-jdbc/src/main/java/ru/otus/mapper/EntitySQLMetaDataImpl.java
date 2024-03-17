@@ -60,11 +60,13 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
 
     @Override
     public String getInsertSql() {
-        String allColumns = getAllColumns();
+        String allColumns = entityClassMetaData.getFieldsWithoutId().stream()
+                .map(Field::getName)
+                .collect(Collectors.joining(","));
 
         String tableName = entityClassMetaData.getName();
 
-        String values = entityClassMetaData.getAllFields().stream()
+        String values = entityClassMetaData.getFieldsWithoutId().stream()
                 .map(f -> QUESTION)
                 .collect(Collectors.joining(","));
 
@@ -73,7 +75,10 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
 
     @Override
     public String getUpdateSql() {
-        String allColumnsWithoutId = getAllColumnsWithoutId();
+        String allColumnsWithoutId = entityClassMetaData.getFieldsWithoutId().stream()
+                .map(f -> f.getName() + SPACE + EQUALS + SPACE + QUESTION)
+                .collect(Collectors.joining(","));
+
         String tableName = entityClassMetaData.getName();
         String fieldId = entityClassMetaData.getIdField().getName();
 
@@ -83,12 +88,6 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
     private String getAllColumns() {
         return entityClassMetaData.getAllFields().stream()
                 .map(Field::getName)
-                .collect(Collectors.joining(","));
-    }
-
-    private String getAllColumnsWithoutId() {
-        return entityClassMetaData.getFieldsWithoutId().stream()
-                .map(f -> f.getName() + SPACE + EQUALS + SPACE + QUESTION)
                 .collect(Collectors.joining(","));
     }
 }

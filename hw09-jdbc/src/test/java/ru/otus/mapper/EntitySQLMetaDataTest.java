@@ -40,7 +40,7 @@ public class EntitySQLMetaDataTest {
 
     @Test
     public void shouldCorrectReturnInsert() {
-        String insert = " insert into testClassMetadata(fieldId,field1,field2) values (?,?,?);";
+        String insert = " insert into testClassMetadata(field1,field2) values (?,?);";
 
         String result = entitySQLMetaData.getInsertSql();
 

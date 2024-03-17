@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /** Сохратяет объект в базу, читает объект из базы */
 @SuppressWarnings("java:S1068")
@@ -80,9 +81,10 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
     @Override
     public void update(Connection connection, T client) {
         try {
-            List<Object> values = entityClassMetaData.getAllFields().stream()
+            List<Object> values = entityClassMetaData.getFieldsWithoutId().stream()
                     .map(f -> getValue(f, client))
-                    .toList();
+                    .collect(Collectors.toList());
+            values.add(getValue(entityClassMetaData.getIdField(), client));
 
             dbExecutor.executeStatement(connection, entitySQLMetaData.getUpdateSql(), values);
         } catch (Exception e) {
@@ -94,13 +96,14 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
         Object[] args = new Object[constructor.getParameterCount()];
 
         for (int i = 1; i <= constructor.getParameterCount(); i++)
-            args[i] = rs.getObject(i);
+            args[i - 1] = rs.getObject(i);
 
         return constructor.newInstance(args);
     }
 
     private Object getValue(Field f, T object) {
         try {
+            f.setAccessible(true);
             return f.get(object);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

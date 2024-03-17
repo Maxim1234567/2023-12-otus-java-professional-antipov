@@ -2,6 +2,8 @@ package ru.otus;
 
 import ru.otus.mapper.annotation.Id;
 
+import java.util.Objects;
+
 public class TestClassMetadata {
 
     @Id
@@ -39,5 +41,18 @@ public class TestClassMetadata {
 
     public void setField2(String field2) {
         this.field2 = field2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TestClassMetadata that = (TestClassMetadata) o;
+        return fieldId.equals(that.fieldId) && field1.equals(that.field1) && field2.equals(that.field2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fieldId, field1, field2);
     }
 }
